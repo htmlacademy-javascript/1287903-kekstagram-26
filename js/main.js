@@ -28,23 +28,26 @@ const NAMES = [
   'Анна',
 ];
 // Функция для создания комментария
-const commentUser =  (digit) =>({
-  id:digit,
-  avatar:`img/avatar-${returnNumber(1,6)}.svg`,
-  message:TEXT[returnNumber(0,TEXT.length-1)],
-  name:NAMES[returnNumber(0,NAMES.length-1)]
-});
-// Функция для создания фотографии
-const createPhoto =  (index) =>({
-  id:index,
-  url:`photos/${index}.jpg`,
-  description:'Это самая лучшая фотография',
-  likes:returnNumber(15,200),
-  comments:commentUser(index+1)
-});
-// Массив из 25 сгенерированных объектов
-const randomDescription = [];
-for (let i=1;i<=25;i++) {
-  randomDescription.push(createPhoto(i));
+function createUserComment (digit) {
+  return {
+    id:digit,
+    avatar:`img/avatar-${returnNumber(1,6)}.svg`,
+    message:TEXT[returnNumber(0,TEXT.length-1)],
+    name:NAMES[returnNumber(0,NAMES.length-1)]
+  };
 }
-
+// Функция для создания фотографии
+function createPhoto  (index) {
+  return {
+    id:index,
+    url:`photos/${index}.jpg`,
+    description:'Это самая лучшая фотография',
+    likes:returnNumber(15,200),
+    comments:createUserComment(index+1)
+  };
+}
+// Массив из 25 сгенерированных объектов
+const randomDescriptions = [];
+for (let i=1;i<=25;i++) {
+  randomDescriptions.push(createPhoto(i));
+}
