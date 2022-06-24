@@ -1,2 +1,2 @@
-import '.data.js';
-import '.util.js';
+// import {randomDescriptions} from  './data.js';
+import './util.js';

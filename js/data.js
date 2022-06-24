@@ -41,3 +41,4 @@ const randomDescriptions = [];
 for (let i=1;i<=25;i++) {
   randomDescriptions.push(createPhoto(i));
 }
+export {randomDescriptions};
