@@ -14,3 +14,6 @@ randomDescriptions.forEach( ({url,likes,comments})=>{
   pictureFragment.appendChild(pictureImage);
 });
 pictureElement.appendChild(pictureFragment);
+
+export {pictureElement};
+
