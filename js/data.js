@@ -18,13 +18,17 @@ const NAMES = [
   'Анна',
 ];
 // Функция для создания комментария
-function createUserComment (digit) {
-  return {
-    id:digit,
-    avatar:`img/avatar-${returnNumber(1,6)}.svg`,
-    message:TEXT[returnNumber(0,TEXT.length-1)],
-    name:NAMES[returnNumber(0,NAMES.length-1)]
-  };
+function createUserComment (digit=returnNumber(1,6)) {
+  const commentsArray = [];
+  for (let i=0;i<digit;i++) {
+    commentsArray[i] ={
+      id:i+1,
+      avatar:`img/avatar-${returnNumber(1,6)}.svg`,
+      message:TEXT[returnNumber(0,TEXT.length-1)],
+      name:NAMES[returnNumber(0,NAMES.length-1)]
+    };
+  }
+  return commentsArray;
 }
 // Функция для создания фотографии
 function createPhoto  (index) {
@@ -33,7 +37,7 @@ function createPhoto  (index) {
     url:`photos/${index}.jpg`,
     description:'Это самая лучшая фотография',
     likes:returnNumber(15,200),
-    comments:createUserComment(index+1)
+    comments:createUserComment()
   };
 }
 // Массив из 25 сгенерированных объектов
