@@ -11,9 +11,9 @@ const socialComments = document.querySelector('.social__comments');
 const commmmentsFragment = document.createDocumentFragment();
 
 // Список комментариев под фотографией:
-const renderComments = function () {
+const renderComments = function (pictureId) {
   socialComments.innerHTML='';
-  randomDescriptions[0].comments.forEach((comment) => {
+  randomDescriptions.find((photoElement) => photoElement.id === pictureId).comments.forEach((comment) => {
     const socialComment = document.createElement('li');
     socialComment.classList.add('social__comment');
     const socialPicture = document.createElement('img');
@@ -34,15 +34,18 @@ const renderComments = function () {
 };
 
 // Вешаем обработчик на сетку
-pictureElement.addEventListener('click' ,  (event) => {
-  bigPicture.classList.remove('hidden');
-  const eventTarget = event.target.closest('a');
-  bigPictureImg.querySelector('img').src=eventTarget.querySelector('.picture__img').src;
-  bigPicture.querySelector('.big-picture__img img').alt=eventTarget.querySelector('.picture__img').alt;
-  bigPicture.querySelector('.likes-count').textContent=eventTarget.querySelector('.picture__likes').textContent;
-  bigPicture.querySelector('.comments-count').textContent=eventTarget.querySelector('.picture__comments').textContent;
-  bigPicture.querySelector('.social__caption').textContent=eventTarget.querySelector('.picture__img').alt;
-  renderComments();
+pictureElement.addEventListener('click' ,  (evt) => {
+  if (evt.target.nodeName === 'A'|| evt.target.closest('a'))
+  { bigPicture.classList.remove('hidden');
+    const eventTarget = evt.target.closest('a');
+    const pictureDataAtribute = Number(eventTarget.dataset.pictureId);
+    bigPictureImg.querySelector('img').src=eventTarget.querySelector('.picture__img').src;
+    bigPicture.querySelector('.big-picture__img img').alt=eventTarget.querySelector('.picture__img').alt;
+    bigPicture.querySelector('.likes-count').textContent=eventTarget.querySelector('.picture__likes').textContent;
+    bigPicture.querySelector('.comments-count').textContent=eventTarget.querySelector('.picture__comments').textContent;
+    bigPicture.querySelector('.social__caption').textContent=eventTarget.querySelector('.picture__img').alt;
+    renderComments(pictureDataAtribute);
+  }
   // Скрываем блоки ".social__comment-count" и  ".comments-loader".
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
