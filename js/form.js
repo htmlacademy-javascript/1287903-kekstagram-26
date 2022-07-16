@@ -40,25 +40,22 @@ textHashtags.addEventListener('focus', () => {
 textHashtags.addEventListener('blur', () => {
   document.addEventListener('keydown', closeModalWindow);
 });
-// Хэш-теги
-// imgUploadForm.addEventListener('submit', (evt) => {
-//   evt.preventDefault();
-// });
 
 // Подключение библиотеки
 const imgUploadForm = document.querySelector('.img-upload__form');
 const pristine = new Pristine(imgUploadForm,
-  {classTo: 'text__hashtags',
-    errorTextParent:'text__hashtags',
-    errorTextClass:''
-  },
-  {classTo: 'text__description',
-    errorTextParent:'text__description',
-    errorTextClass:''
-  },
+  { classTo: 'img-upload__field-wrapper',
+    errorTextParent:'img-upload__field-wrapper',
+    errorTextClass:'text__error'
+  }
 );
 imgUploadForm.addEventListener ('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
-});
+}
+);
 
+// Хэш-теги
+// imgUploadForm.addEventListener('submit', (evt) => {
+//   evt.preventDefault();
+// });
