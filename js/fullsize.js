@@ -64,3 +64,5 @@ document.addEventListener('keydown' ,  (evt) =>{
     body.classList.remove('modal-open');
   }
 });
+
+export {body};
