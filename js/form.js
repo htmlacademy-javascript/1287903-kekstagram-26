@@ -12,19 +12,19 @@ uploadFile.addEventListener('change', () => {
   body.classList.add('modal-open');
 });
 // Функция закрытия окна
-const closeModal = function () {
+const closeModalAndResetWindow = function () {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   uploadFile.value = '';
 };
 //Закрытие формы редактирования изображения по кнопке закрытия и ESC
 uploadCancel.addEventListener('click', () => {
-  closeModal();
+  closeModalAndResetWindow();
 });
 function closeModalWindow (evt) {
   if (evt.code === 'Escape' ) {
     evt.preventDefault();
-    closeModal();
+    closeModalAndResetWindow();
   }
 }
 // Код для отмены кнопки Esc при фокусе на комментарий
@@ -43,14 +43,17 @@ const pristine = new Pristine(imgUploadForm,
     errorTextClass:'text__error'
   }
 );
-imgUploadForm.addEventListener ('submit', (evt) => {
+textHashtags.addEventListener('change',(evt) => {
   const isValid =pristine.validate();
   if (!isValid) {
     evt.preventDefault();
-    imgUploadSubmit.style.color= 'black';
+    imgUploadSubmit.setAttribute('disabled',true);
+    imgUploadSubmit.style.backgroundColor= '#000';
+  }else {
+    imgUploadSubmit.removeAttribute('disabled');
   }
-}
-);
+});
+
 
 // Функция проверки на #,символы,длину хештега
 function checkHashtag (currentValue) {
@@ -61,7 +64,7 @@ function checkHashtag (currentValue) {
 function checkCorrectHashtags (value) {
   const hashtags = value.split(' ');
   const everyHashtags = hashtags.every(checkHashtag);
-  return everyHashtags===true;
+  return everyHashtags === true;
 }
 
 pristine.addValidator(textHashtags,checkCorrectHashtags,'Неверный хештег:Хеш-тег начинается с #;Хеш-теги разделяются пробелом');
@@ -69,7 +72,7 @@ pristine.addValidator(textHashtags,checkCorrectHashtags,'Неверный хеш
 // Функция проверки количества хештегов
 function checkAmountHashtags (value) {
   const hashtagsAmount = value.split(' ');
-  return hashtagsAmount.length <=5;
+  return hashtagsAmount.length <= 5;
 }
 pristine.addValidator(textHashtags,checkAmountHashtags,'Не больше 5');
 
