@@ -33,13 +33,6 @@ textDescription.addEventListener('focus', () => {
 textDescription.addEventListener('blur', () => {
   document.addEventListener('keydown', closeModalWindow);
 });
-// Код для отмены кнопки Esc при фокусе на хештег
-textHashtags.addEventListener('focus', () => {
-  document.removeEventListener('keydown', closeModalWindow);
-});
-textHashtags.addEventListener('blur', () => {
-  document.addEventListener('keydown', closeModalWindow);
-});
 
 // Подключение библиотеки
 const imgUploadForm = document.querySelector('.img-upload__form');
@@ -55,7 +48,31 @@ imgUploadForm.addEventListener ('submit', (evt) => {
 }
 );
 
-// Хэш-теги
-// imgUploadForm.addEventListener('submit', (evt) => {
-//   evt.preventDefault();
-// });
+// Функция проверки на #,символы,длину хештега
+function checkHashtag (currentValue) {
+  const regular = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
+  return regular.test(currentValue);
+}
+
+function checkCorrectHashtags (value) {
+  const hashtags = value.split(' ');
+  const everyHashtags = hashtags.every(checkHashtag);
+  return everyHashtags===true;
+}
+
+pristine.addValidator(textHashtags,checkCorrectHashtags,'Неверный хештег:Хеш-тег начинается с #;Хеш-теги разделяются пробелом');
+
+// Функция проверки количества хештегов
+function checkAmountHashtags (value) {
+  const hashtagsAmount = value.split(' ');
+  return hashtagsAmount.length <=5;
+}
+pristine.addValidator(textHashtags,checkAmountHashtags,'Не больше 5');
+
+// Код для отмены кнопки Esc при фокусе на хештег
+textHashtags.addEventListener('focus', () => {
+  document.removeEventListener('keydown', closeModalWindow);
+});
+textHashtags.addEventListener('blur', () => {
+  document.addEventListener('keydown', closeModalWindow);
+});
