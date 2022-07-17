@@ -4,6 +4,7 @@ const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadCancel = document.getElementById('upload-cancel');
 const textDescription = document.querySelector('.text__description');
 const textHashtags = document.querySelector('.text__hashtags');
+const imgUploadSubmit = document.querySelector('.img-upload__submit');
 
 //Открытие формы редактирования изображения
 uploadFile.addEventListener('change', () => {
@@ -43,8 +44,11 @@ const pristine = new Pristine(imgUploadForm,
   }
 );
 imgUploadForm.addEventListener ('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+  const isValid =pristine.validate();
+  if (!isValid) {
+    evt.preventDefault();
+    imgUploadSubmit.style.color= 'black';
+  }
 }
 );
 
@@ -76,3 +80,11 @@ textHashtags.addEventListener('focus', () => {
 textHashtags.addEventListener('blur', () => {
   document.addEventListener('keydown', closeModalWindow);
 });
+// Функция проверки одного и того же хеш-тега
+function checkSimilarHashtags (value) {
+  const hashtagsSimilar = value.split(' ');
+  const hashtagsSimilarRegister = hashtagsSimilar.map((element) => element.toLowerCase());
+  const checkElementHashtags = [...new Set(hashtagsSimilarRegister)];
+  return checkElementHashtags.length === hashtagsSimilar.length;
+}
+pristine.addValidator(textHashtags,checkSimilarHashtags,'Одинаковый хеш-тег');
