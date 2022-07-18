@@ -18,7 +18,7 @@ const NAMES = [
   'Анна',
 ];
 // Функция для создания комментария
-function createUserComment (digit=returnNumber(1,6)) {
+function createUserComment (digit=returnNumber(1,20)) {
   const commentsArray = [];
   for (let i=0;i<digit;i++) {
     commentsArray[i] ={

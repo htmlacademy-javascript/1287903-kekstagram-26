@@ -18,3 +18,6 @@ pictureElement.appendChild(pictureFragment);
 
 export {pictureElement};
 
+// const commentsArray=Array.from(document.querySelector('.social__comment'));
+// const result = commentsArray.filter((element) => !element.classList.contains('hidden'));
+// bigPicture.textContent=`${result.length} из ${commentsArray.length} комментариев`;
