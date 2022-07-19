@@ -9,17 +9,22 @@ const bigPictureCancel = document.querySelector('.big-picture__cancel');
 const socialComments = document.querySelector('.social__comments');
 const commmmentsFragment = document.createDocumentFragment();
 let COMMENT_AMOUNT = 5;
+
 //  Загрузить ещё комментарии
 const commentsLoaderFunction = () => {
-  for (let i=COMMENT_AMOUNT;i<=COMMENT_AMOUNT+5;i++) {
+  if ((socialComments.children.length-COMMENT_AMOUNT) < 5) {
+    for (let i=COMMENT_AMOUNT;i<socialComments.children.length;i++) {
+      socialComments.children[i].classList.remove('hidden');
+      bigPicture.querySelector('.social__comment-count').textContent=`${socialComments.children.length} из ${socialComments.children.length} комментариев`;
+    }
+    commentsLoader.classList.add('hidden');
+  }
+  for (let i=COMMENT_AMOUNT;i<COMMENT_AMOUNT+5;i++) {
     if (socialComments.children[i]){
       socialComments.children[i].classList.remove('hidden');
       bigPicture.querySelector('.social__comment-count').textContent=`${i} из ${socialComments.children.length} комментариев`;
     }    }
   COMMENT_AMOUNT+=5;
-  if ((socialComments.children.length-COMMENT_AMOUNT) < 5) {
-    commentsLoader.classList.add('hidden');
-  }
 };
 
 // Список комментариев под фотографией:
