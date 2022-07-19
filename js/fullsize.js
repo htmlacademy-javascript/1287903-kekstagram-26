@@ -8,23 +8,24 @@ const body = document.querySelector('body');
 const bigPictureCancel = document.querySelector('.big-picture__cancel');
 const socialComments = document.querySelector('.social__comments');
 const commmmentsFragment = document.createDocumentFragment();
-let COMMENT_AMOUNT = 5;
+let commentAmount= 5;
 
 //  Загрузить ещё комментарии
 const commentsLoaderFunction = () => {
-  if ((socialComments.children.length-COMMENT_AMOUNT) < 5) {
-    for (let i=COMMENT_AMOUNT;i<socialComments.children.length;i++) {
+  if ((socialComments.children.length-commentAmount) <= 5) {
+    for (let i=commentAmount;i<socialComments.children.length;i++) {
       socialComments.children[i].classList.remove('hidden');
-      bigPicture.querySelector('.social__comment-count').textContent=`${socialComments.children.length} из ${socialComments.children.length} комментариев`;
     }
+    bigPicture.querySelector('.social__comment-count').textContent=`${socialComments.children.length} из ${socialComments.children.length} комментариев`;
     commentsLoader.classList.add('hidden');
+    return;
   }
-  for (let i=COMMENT_AMOUNT;i<COMMENT_AMOUNT+5;i++) {
+  for (let i=commentAmount;i<=commentAmount+5;i++) {
     if (socialComments.children[i]){
       socialComments.children[i].classList.remove('hidden');
       bigPicture.querySelector('.social__comment-count').textContent=`${i} из ${socialComments.children.length} комментариев`;
-    }    }
-  COMMENT_AMOUNT+=5;
+    }}
+  commentAmount+=5;
 };
 
 // Список комментариев под фотографией:
@@ -55,6 +56,11 @@ const renderComments = function (pictureId) {
     bigPicture.querySelector('.social__comment-count').textContent=`${result.length} из ${commentsArray.length} комментариев`;
   });
   socialComments.appendChild(commmmentsFragment);
+  if (socialComments.children.length <= commentAmount) {
+    commentsLoader.classList.add('hidden');
+  } else {
+    commentsLoader.classList.remove('hidden');
+  }
   commentsLoader.addEventListener('click',commentsLoaderFunction);
 };
 
@@ -80,12 +86,14 @@ bigPictureCancel.addEventListener('click', () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   commentsLoader.removeEventListener('click',commentsLoaderFunction);
+  commentAmount = 5;
 });
 document.addEventListener('keydown' ,  (evt) =>{
   if (evt.code === 'Escape' ) {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
     commentsLoader.removeEventListener('click',commentsLoaderFunction);
+    commentAmount = 5;
   }
 });
 export {body};
