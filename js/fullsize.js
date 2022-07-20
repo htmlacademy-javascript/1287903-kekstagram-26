@@ -87,6 +87,7 @@ bigPictureCancel.addEventListener('click', () => {
   body.classList.remove('modal-open');
   commentsLoader.removeEventListener('click',commentsLoaderFunction);
   commentAmount = 5;
+
 });
 document.addEventListener('keydown' ,  (evt) =>{
   if (evt.code === 'Escape' ) {
@@ -96,4 +97,5 @@ document.addEventListener('keydown' ,  (evt) =>{
     commentAmount = 5;
   }
 });
+
 export {body};
