@@ -17,6 +17,9 @@ uploadFile.addEventListener('change', () => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', closeModalWindowEscape);
+  //Обработчики изменения масштаба
+  scaleControlSmaller.addEventListener('click',changeScaleSmaller );
+  scaleControlBigger.addEventListener('click', changeScaleBigger);
 });
 // Функция закрытия окна
 const closeModalAndResetWindow = function () {
@@ -29,8 +32,8 @@ const closeModalAndResetWindow = function () {
 function closeModalWindow () {
   closeModalAndResetWindow();
   resetScale();
-  // scaleControlSmaller.removeEventListener('click',changeScaleSmaller);
-  // scaleControlBigger.removeEventListener('click', changeScaleBigger);
+  scaleControlSmaller.removeEventListener('click',changeScaleSmaller);
+  scaleControlBigger.removeEventListener('click', changeScaleBigger);
 
 }
 //Закрытие формы редактирования изображения по кнопке закрытия и ESC
@@ -105,6 +108,4 @@ function checkSimilarHashtags (value) {
 }
 pristine.addValidator(textHashtags,checkSimilarHashtags,'Одинаковый хеш-тег');
 
-//Обработчики изменения масштаба
-scaleControlSmaller.addEventListener('click',changeScaleSmaller );
-scaleControlBigger.addEventListener('click', changeScaleBigger);
+
