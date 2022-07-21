@@ -1,5 +1,6 @@
 import { body } from './fullsize.js';
 import {changeScaleBigger,changeScaleSmaller,resetScale} from './editor-scale.js';
+import { resetPictureEffects,resetSliderEffects } from './editor-effect.js';
 // Переменные для кнопок изменения масштаба
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
@@ -12,47 +13,6 @@ const textHashtags = document.querySelector('.text__hashtags');
 const imgUploadSubmit = document.querySelector('.img-upload__submit');
 
 const imgUploadForm = document.querySelector('.img-upload__form');
-//Открытие формы редактирования изображения
-uploadFile.addEventListener('change', () => {
-  imgUploadOverlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-  document.addEventListener('keydown', closeModalWindowEscape);
-  //Обработчики изменения масштаба
-  scaleControlSmaller.addEventListener('click',changeScaleSmaller );
-  scaleControlBigger.addEventListener('click', changeScaleBigger);
-});
-// Функция закрытия окна
-const closeModalAndResetWindow = function () {
-  imgUploadOverlay.classList.add('hidden');
-  body.classList.remove('modal-open');
-  uploadFile.value = '';
-};
-
-// Функция закрытия окна загрузки
-function closeModalWindow () {
-  closeModalAndResetWindow();
-  resetScale();
-  scaleControlSmaller.removeEventListener('click',changeScaleSmaller);
-  scaleControlBigger.removeEventListener('click', changeScaleBigger);
-
-}
-//Закрытие формы редактирования изображения по кнопке закрытия и ESC
-uploadCancel.addEventListener('click', closeModalWindow);
-
-function closeModalWindowEscape (evt) {
-  if (evt.code === 'Escape' ) {
-    evt.preventDefault();
-    closeModalWindow ();
-  }
-}
-// Код для отмены кнопки Esc при фокусе на комментарий
-textDescription.addEventListener('focus', () => {
-  document.removeEventListener('keydown', closeModalWindow);
-});
-textDescription.addEventListener('blur', () => {
-  document.addEventListener('keydown', closeModalWindow);
-});
-
 // Подключение библиотеки
 const pristine = new Pristine(imgUploadForm,
   { classTo: 'img-upload__field-wrapper',
@@ -70,6 +30,50 @@ textHashtags.addEventListener('change',(evt) => {
     imgUploadSubmit.removeAttribute('disabled');
   }
 });
+//Открытие формы редактирования изображения
+uploadFile.addEventListener('change', () => {
+  imgUploadOverlay.classList.remove('hidden');
+  body.classList.add('modal-open');
+  document.addEventListener('keydown', closeModalWindowEscape);
+  //Обработчики изменения масштаба
+  scaleControlSmaller.addEventListener('click',changeScaleSmaller );
+  scaleControlBigger.addEventListener('click', changeScaleBigger);
+});
+// Функция закрытия окна
+const closeModalAndResetWindow = function () {
+  imgUploadOverlay.classList.add('hidden');
+  body.classList.remove('modal-open');
+  uploadFile.value = '';
+  pristine.reset();
+};
+
+// Функция закрытия окна загрузки
+function closeModalWindow () {
+  closeModalAndResetWindow();
+  resetScale();
+  resetPictureEffects();
+  resetSliderEffects();
+  scaleControlSmaller.removeEventListener('click',changeScaleSmaller);
+  scaleControlBigger.removeEventListener('click', changeScaleBigger);
+
+}
+//Закрытие формы редактирования изображения по кнопке закрытия и ESC
+uploadCancel.addEventListener('click', closeModalWindow);
+
+function closeModalWindowEscape (evt) {
+  if (evt.keyCode === 27 ) {
+    evt.preventDefault();
+    closeModalWindow ();
+  }
+}
+// Код для отмены кнопки Esc при фокусе на комментарий
+textDescription.addEventListener('focus', () => {
+  document.removeEventListener('keydown', closeModalWindow);
+});
+textDescription.addEventListener('blur', () => {
+  document.addEventListener('keydown', closeModalWindow);
+});
+
 
 // Функция проверки на #,символы,длину хештега
 function checkHashtag (currentValue) {
