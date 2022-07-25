@@ -1,5 +1,5 @@
 import { pictureElement } from './miniature.js';
-import { randomDescriptions } from './data.js';
+import { getData } from './api.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = document.querySelector('.big-picture__img');
@@ -88,7 +88,7 @@ bigPictureCancel.addEventListener('click', () => {
   commentsLoader.removeEventListener('click',commentsLoaderFunction);
   commentAmount = 5;
 });
-document.addEventListener('keydown' ,  (evt) =>{
+document.addEventListener('keydown' ,  (evt) => {
   if (evt.code === 'Escape' ) {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');

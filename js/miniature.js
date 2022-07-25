@@ -6,7 +6,7 @@ const pictureTemplate = document.querySelector('#picture')
 
 const pictureFragment = document.createDocumentFragment();
 
-randomDescriptions.forEach( ({url,likes,comments,id})=>{
+randomDescriptions.forEach( ({url,likes,comments,id}) => {
   const pictureImage = pictureTemplate.cloneNode(true);
   pictureImage.querySelector('.picture__img').src=url;
   pictureImage.querySelector('.picture__likes').textContent=likes;
