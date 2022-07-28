@@ -1,6 +1,7 @@
 import { body } from './fullsize.js';
 import {changeScaleBigger,changeScaleSmaller,resetScale} from './editor-scale.js';
 import { resetPictureEffects,resetSliderEffects } from './editor-effect.js';
+import { sendData } from './api.js';
 // Переменные для кнопок изменения масштаба
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
@@ -20,16 +21,7 @@ const pristine = new Pristine(imgUploadForm,
     errorTextClass:'text__error'
   }
 );
-textHashtags.addEventListener('change',(evt) => {
-  const isValid =pristine.validate();
-  if (!isValid) {
-    evt.preventDefault();
-    imgUploadSubmit.setAttribute('disabled',true);
-    imgUploadSubmit.style.backgroundColor= '#000';
-  }else {
-    imgUploadSubmit.removeAttribute('disabled');
-  }
-});
+
 //Открытие формы редактирования изображения
 uploadFile.addEventListener('change', () => {
   imgUploadOverlay.classList.remove('hidden');
@@ -55,7 +47,6 @@ function closeModalWindow () {
   resetSliderEffects();
   scaleControlSmaller.removeEventListener('click',changeScaleSmaller);
   scaleControlBigger.removeEventListener('click', changeScaleBigger);
-
 }
 //Закрытие формы редактирования изображения по кнопке закрытия и ESC
 uploadCancel.addEventListener('click', closeModalWindow);
@@ -112,4 +103,23 @@ function checkSimilarHashtags (value) {
 }
 pristine.addValidator(textHashtags,checkSimilarHashtags,'Одинаковый хеш-тег');
 
-
+function setUploadImageFormSubmit(onSuccess) {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      imgUploadSubmit.setAttribute('disabled',true);
+      imgUploadSubmit.style.backgroundColor= '#000';
+      sendData(
+        () => {
+          onSuccess();
+          imgUploadSubmit.disabled = false;
+        },() => {
+          imgUploadSubmit.disabled = false;
+        },
+        new FormData(evt.target)
+      );
+    }
+  });
+}
+export {setUploadImageFormSubmit,closeModalWindow};

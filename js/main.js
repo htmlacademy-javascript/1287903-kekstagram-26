@@ -6,6 +6,7 @@ import './editor-effect.js';
 import { getData}  from './api.js';
 import {createPhotos} from './miniature.js';
 import {QWERTY,setMiniaturesClick} from './fullsize.js';
+import {setUploadImageFormSubmit ,closeModalWindow } from './form.js';
 
 getData((photosData) => {
   createPhotos(photosData);
@@ -14,3 +15,4 @@ getData((photosData) => {
   });
 });
 
+setUploadImageFormSubmit(closeModalWindow);
