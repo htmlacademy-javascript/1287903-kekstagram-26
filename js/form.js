@@ -102,19 +102,20 @@ function checkSimilarHashtags (value) {
   return checkElementHashtags.length === hashtagsSimilar.length;
 }
 pristine.addValidator(textHashtags,checkSimilarHashtags,'Одинаковый хеш-тег');
-
+// Функция проверки отправки формы
 function setUploadImageFormSubmit(onSuccess) {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
-      imgUploadSubmit.setAttribute('disabled',true);
+      imgUploadSubmit.disabled = true;
       imgUploadSubmit.style.backgroundColor= '#000';
       sendData(
         () => {
           onSuccess();
           imgUploadSubmit.disabled = false;
-        },() => {
+        },
+        () => {
           imgUploadSubmit.disabled = false;
         },
         new FormData(evt.target)
