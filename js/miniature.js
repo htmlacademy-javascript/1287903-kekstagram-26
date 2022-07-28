@@ -14,5 +14,5 @@ const createPhotos = (data) => {
   });
   pictureList.appendChild(pictureFragment);
 };
-export {createPhotos,pictureList };
+export {createPhotos};
 
