@@ -5,7 +5,7 @@ function getData(onSuccess, onFail) {
       if (response.ok) {
         return response.json();
       } else {
-        throw new Error('Ошибка загрузки данных с сервера');
+        throw new Error('Не удалось загрузить данные с сервера!');
       }})
     .then((data) => {
       onSuccess(data);
@@ -31,4 +31,5 @@ function sendData(onSuccess, onFail, body) {
       onFail();
     });
 }
+
 export {getData,sendData};
