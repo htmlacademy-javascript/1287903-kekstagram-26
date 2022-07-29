@@ -2,8 +2,9 @@ const imgUploadPreview=document.querySelector('.img-upload__preview img');
 const effectsList=document.querySelector('.effects__list');
 const effectLevelSlider=document.querySelector('.effect-level__slider');
 const effectLevelValue=document.querySelector('.effect-level__value');
-let CssFilter = '';
-let CssFilterUnit = '';
+const imgUploadEffectLevel=document.querySelector('.img-upload__effect-level');
+let cssFilter = '';
+let cssFilterUnit = '';
 // Создаём объект с свойствами эффектов
 const effectsPreviewList = {
   none: {
@@ -63,7 +64,7 @@ noUiSlider.create(effectLevelSlider, {
 
 effectLevelSlider.noUiSlider.on('update', () => {
   effectLevelValue.value = effectLevelSlider.noUiSlider.get();
-  imgUploadPreview.style.filter= `${CssFilter}(${effectLevelValue.value}${CssFilterUnit})`;
+  imgUploadPreview.style.filter= `${cssFilter}(${effectLevelValue.value}${cssFilterUnit})`;
 });
 
 // Изменение фильтра при нажатии на кнопки
@@ -72,10 +73,10 @@ effectsList.addEventListener('change', (evt) => {
     const effectsValue = effectsPreviewList[evt.target.value];
     imgUploadPreview.className='';
     imgUploadPreview.classList.add(effectsValue.class);
-    effectLevelSlider.style.display = effectsValue.display;
+    imgUploadEffectLevel.style.display = effectsValue.display;
     effectLevelSlider.noUiSlider.updateOptions(effectsValue.settings);
-    CssFilter = effectsValue.filter;
-    CssFilterUnit = effectsValue.unit;
+    cssFilter = effectsValue.filter;
+    cssFilterUnit = effectsValue.unit;
     imgUploadPreview.style.filter ='';
   }
 });
@@ -88,6 +89,6 @@ function resetPictureEffects() {
 
 //Функция сброса параметров слайдера
 function resetSliderEffects() {
-  effectLevelSlider.style.display = 'none';
+  imgUploadEffectLevel.style.display = 'none';
 }
 export {resetPictureEffects,resetSliderEffects};
