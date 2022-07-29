@@ -1,6 +1,8 @@
 import { body } from './fullsize.js';
 import {changeScaleBigger,changeScaleSmaller,resetScale} from './editor-scale.js';
 import { resetPictureEffects,resetSliderEffects } from './editor-effect.js';
+import { sendData } from './api.js';
+import { showMessage } from './util.js';
 // Переменные для кнопок изменения масштаба
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
@@ -20,16 +22,7 @@ const pristine = new Pristine(imgUploadForm,
     errorTextClass:'text__error'
   }
 );
-textHashtags.addEventListener('change',(evt) => {
-  const isValid =pristine.validate();
-  if (!isValid) {
-    evt.preventDefault();
-    imgUploadSubmit.setAttribute('disabled',true);
-    imgUploadSubmit.style.backgroundColor= '#000';
-  }else {
-    imgUploadSubmit.removeAttribute('disabled');
-  }
-});
+
 //Открытие формы редактирования изображения
 uploadFile.addEventListener('change', () => {
   imgUploadOverlay.classList.remove('hidden');
@@ -38,6 +31,7 @@ uploadFile.addEventListener('change', () => {
   //Обработчики изменения масштаба
   scaleControlSmaller.addEventListener('click',changeScaleSmaller );
   scaleControlBigger.addEventListener('click', changeScaleBigger);
+  resetSliderEffects();
 });
 // Функция закрытия окна
 const closeModalAndResetWindow = function () {
@@ -52,10 +46,8 @@ function closeModalWindow () {
   closeModalAndResetWindow();
   resetScale();
   resetPictureEffects();
-  resetSliderEffects();
   scaleControlSmaller.removeEventListener('click',changeScaleSmaller);
   scaleControlBigger.removeEventListener('click', changeScaleBigger);
-
 }
 //Закрытие формы редактирования изображения по кнопке закрытия и ESC
 uploadCancel.addEventListener('click', closeModalWindow);
@@ -82,9 +74,7 @@ function checkHashtag (currentValue) {
 }
 
 function checkCorrectHashtags (value) {
-  const hashtags = value.split(' ');
-  const everyHashtags = hashtags.every(checkHashtag);
-  return everyHashtags === true;
+  return !value.length || value.split(' ').every(checkHashtag);
 }
 
 pristine.addValidator(textHashtags,checkCorrectHashtags,'Неверный хештег:Хеш-тег начинается с #;Хеш-теги разделяются пробелом');
@@ -103,6 +93,7 @@ textHashtags.addEventListener('focus', () => {
 textHashtags.addEventListener('blur', () => {
   document.addEventListener('keydown', closeModalWindow);
 });
+
 // Функция проверки одного и того же хеш-тега
 function checkSimilarHashtags (value) {
   const hashtagsSimilar = value.split(' ');
@@ -112,4 +103,28 @@ function checkSimilarHashtags (value) {
 }
 pristine.addValidator(textHashtags,checkSimilarHashtags,'Одинаковый хеш-тег');
 
+// Функция проверки отправки формы
+function setUploadImageFormSubmit(onSuccess) {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      imgUploadSubmit.disabled = true;
+      imgUploadSubmit.style.backgroundColor= '#000';
+      sendData(
+        () => {
+          onSuccess();
+          showMessage('success');
+          imgUploadSubmit.disabled = false;
+        },
+        () => {
+          showMessage('error');
+          imgUploadSubmit.disabled = false;
+        },
+        new FormData(evt.target)
+      );
+    }
+  });
+}
 
+export {setUploadImageFormSubmit,closeModalWindow};

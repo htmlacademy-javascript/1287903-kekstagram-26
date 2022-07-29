@@ -1,6 +1,4 @@
-import { pictureElement } from './miniature.js';
-import { randomDescriptions } from './data.js';
-
+const pictureList = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = document.querySelector('.big-picture__img');
 const commentsLoader = document.querySelector('.comments-loader');
@@ -28,11 +26,11 @@ const commentsLoaderFunction = () => {
   commentAmount+=5;
 };
 
-// Список комментариев под фотографией:
-const renderComments = function (pictureId) {
-  socialComments.innerHTML='';
+// Функция создания комментария
+const renderComments = function (data,pictureId) {
+  socialComments.innerHTML= '';
   let counter=0;
-  randomDescriptions.find((photoElement) => photoElement.id === pictureId).comments.forEach((comment) => {
+  data.find((photoElement) => photoElement.id === pictureId).comments.forEach((comment) => {
     counter=counter+1;
     const socialComment = document.createElement('li');
     socialComment.classList.add('social__comment');
@@ -64,8 +62,8 @@ const renderComments = function (pictureId) {
   commentsLoader.addEventListener('click',commentsLoaderFunction);
 };
 
-// Вешаем обработчик на сетку
-pictureElement.addEventListener('click' ,  (evt) => {
+// Функция открытия фотографии
+const QWERTY = function (data,evt) {
   if (evt.target.nodeName === 'A'|| evt.target.closest('a'))
   { bigPicture.classList.remove('hidden');
     const eventTarget = evt.target.closest('a');
@@ -74,13 +72,17 @@ pictureElement.addEventListener('click' ,  (evt) => {
     bigPicture.querySelector('.big-picture__img img').alt=eventTarget.querySelector('.picture__img').alt;
     bigPicture.querySelector('.likes-count').textContent=eventTarget.querySelector('.picture__likes').textContent;
     bigPicture.querySelector('.social__caption').textContent=eventTarget.querySelector('.picture__img').alt;
-    renderComments(pictureDataAtribute);
+    renderComments(data,pictureDataAtribute);
   }
-
   // Фиксируем контейнер с фотографиями
   body.classList.add('modal-open');
-});
-
+};
+// Вешаем обработчик на сетку
+const setMiniaturesClick = function (callBack) {
+  pictureList.addEventListener('click' , (evt) => {
+    callBack(evt);
+  });
+};
 // Код для закрытия окна по нажатию клавиши Esc и клике по иконке закрытия.
 bigPictureCancel.addEventListener('click', () => {
   bigPicture.classList.add('hidden');
@@ -88,7 +90,7 @@ bigPictureCancel.addEventListener('click', () => {
   commentsLoader.removeEventListener('click',commentsLoaderFunction);
   commentAmount = 5;
 });
-document.addEventListener('keydown' ,  (evt) =>{
+document.addEventListener('keydown' ,  (evt) => {
   if (evt.code === 'Escape' ) {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
@@ -97,4 +99,4 @@ document.addEventListener('keydown' ,  (evt) =>{
   }
 });
 
-export {body};
+export {body,setMiniaturesClick,QWERTY};
