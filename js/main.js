@@ -8,11 +8,13 @@ import {createPhotos} from './miniature.js';
 import {QWERTY,setMiniaturesClick} from './fullsize.js';
 import {setUploadImageFormSubmit ,closeModalWindow } from './form.js';
 import {showFailMessage} from './util.js';
+import { showFilterBlock } from './filter.js';
 getData((photosData) => {
   createPhotos(photosData);
   setMiniaturesClick((evt) => {
     QWERTY(photosData,evt);
   });
+  showFilterBlock();
 },showFailMessage);
 
 setUploadImageFormSubmit(closeModalWindow);
