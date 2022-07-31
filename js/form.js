@@ -3,6 +3,7 @@ import {changeScaleBigger,changeScaleSmaller,resetScale} from './editor-scale.js
 import { resetPictureEffects,resetSliderEffects } from './editor-effect.js';
 import { sendData } from './api.js';
 import { showMessage } from './util.js';
+
 // Переменные для заггрузки изображения
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const imgUploadInput = document.querySelector('.img-upload__input');
@@ -19,6 +20,7 @@ const textHashtags = document.querySelector('.text__hashtags');
 const imgUploadSubmit = document.querySelector('.img-upload__submit');
 
 const imgUploadForm = document.querySelector('.img-upload__form');
+
 // Подключение библиотеки
 const pristine = new Pristine(imgUploadForm,
   { classTo: 'img-upload__field-wrapper',
@@ -52,24 +54,8 @@ function closeModalWindow () {
   resetPictureEffects();
   scaleControlSmaller.removeEventListener('click',changeScaleSmaller);
   scaleControlBigger.removeEventListener('click', changeScaleBigger);
+  document.removeEventListener('keydown', closeModalWindowEscape);
 }
-//Закрытие формы редактирования изображения по кнопке закрытия и ESC
-uploadCancel.addEventListener('click', closeModalWindow);
-
-function closeModalWindowEscape (evt) {
-  if (evt.keyCode === 27 ) {
-    evt.preventDefault();
-    closeModalWindow ();
-  }
-}
-// Код для отмены кнопки Esc при фокусе на комментарий
-textDescription.addEventListener('focus', () => {
-  document.removeEventListener('keydown', closeModalWindow);
-});
-textDescription.addEventListener('blur', () => {
-  document.addEventListener('keydown', closeModalWindow);
-});
-
 
 // Функция проверки на #,символы,длину хештега
 function checkHashtag (currentValue) {
@@ -90,14 +76,15 @@ function checkAmountHashtags (value) {
 }
 pristine.addValidator(textHashtags,checkAmountHashtags,'Не больше 5');
 
-// Код для отмены кнопки Esc при фокусе на хештег
-textHashtags.addEventListener('focus', () => {
-  document.removeEventListener('keydown', closeModalWindow);
-});
-textHashtags.addEventListener('blur', () => {
-  document.addEventListener('keydown', closeModalWindow);
-});
+//Закрытие формы редактирования изображения по кнопке закрытия и ESC
+uploadCancel.addEventListener('click', closeModalWindow);
 
+function closeModalWindowEscape (evt) {
+  if (evt.keyCode === 27 && evt.target !== textHashtags && evt.target !== textDescription ) {
+    evt.preventDefault();
+    closeModalWindow ();
+  }
+}
 // Функция проверки одного и того же хеш-тега
 function checkSimilarHashtags (value) {
   const hashtagsSimilar = value.split(' ');
@@ -108,7 +95,7 @@ function checkSimilarHashtags (value) {
 pristine.addValidator(textHashtags,checkSimilarHashtags,'Одинаковый хеш-тег');
 
 // Функция проверки отправки формы
-function setUploadImageFormSubmit(onSuccess) {
+function setUploadImageFormSubmit (onSuccess) {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
