@@ -24,7 +24,7 @@ function commentsLoaderFunction  () {
       bigPicture.querySelector('.social__comment-count').textContent=`${i} из ${socialComments.children.length} комментариев`;
     }}
   commentAmount+=5;
-};
+}
 
 // Функция создания комментария
 function renderComments (data,pictureId) {
