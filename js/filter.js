@@ -49,7 +49,7 @@ function setRandomPhotosClick (callBack) {
 }
 
 // Функция отображения обсуждаемых фотографий
-function compareCommentsLength(photoA,photoB) {
+function compareCommentsLength (photoA,photoB) {
   return photoB.comments.length-photoA.comments.length;
 }
 
@@ -63,6 +63,5 @@ function setPopularPhotosClick (callBack) {
     callBack();
   });
 }
-
 
 export {showFilterBlock,getRandomPictures,setRandomPhotosClick,setDefaultClick,setPopularPhotosClick,getPopularPhotos};

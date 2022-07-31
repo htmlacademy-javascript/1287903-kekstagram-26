@@ -68,7 +68,7 @@ effectLevelSlider.noUiSlider.on('update', () => {
 });
 
 // Изменение фильтра при нажатии на кнопки
-effectsList.addEventListener('change', (evt) => {
+effectsList.addEventListener ('change', (evt) => {
   if (evt.target.nodeName === 'INPUT'|| evt.target.closest('input')) {
     const effectsValue = effectsPreviewList[evt.target.value];
     imgUploadPreview.className='';
@@ -82,13 +82,13 @@ effectsList.addEventListener('change', (evt) => {
 });
 
 //Функция сброса эффектов картинки
-function resetPictureEffects() {
+function resetPictureEffects () {
   imgUploadPreview.classList = '';
   imgUploadPreview.style.filter = '';
 }
 
 //Функция сброса параметров слайдера
-function resetSliderEffects() {
+function resetSliderEffects () {
   imgUploadEffectLevel.style.display = 'none';
 }
 export {resetPictureEffects,resetSliderEffects};

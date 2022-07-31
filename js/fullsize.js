@@ -9,7 +9,7 @@ const commmmentsFragment = document.createDocumentFragment();
 let commentAmount= 5;
 
 //  Загрузить ещё комментарии
-const commentsLoaderFunction = () => {
+function commentsLoaderFunction  () {
   if ((socialComments.children.length-commentAmount) <= 5) {
     for (let i=commentAmount;i<socialComments.children.length;i++) {
       socialComments.children[i].classList.remove('hidden');
@@ -24,10 +24,10 @@ const commentsLoaderFunction = () => {
       bigPicture.querySelector('.social__comment-count').textContent=`${i} из ${socialComments.children.length} комментариев`;
     }}
   commentAmount+=5;
-};
+}
 
 // Функция создания комментария
-const renderComments = function (data,pictureId) {
+function renderComments (data,pictureId) {
   socialComments.innerHTML= '';
   let counter=0;
   data.find((photoElement) => photoElement.id === pictureId).comments.forEach((comment) => {
@@ -60,10 +60,10 @@ const renderComments = function (data,pictureId) {
     commentsLoader.classList.remove('hidden');
   }
   commentsLoader.addEventListener('click',commentsLoaderFunction);
-};
+}
 
 // Функция открытия фотографии
-const getOpenPhoto = function (data,evt) {
+function getOpenPhoto (data,evt) {
   if (evt.target.nodeName === 'A'|| evt.target.closest('a'))
   { bigPicture.classList.remove('hidden');
     const eventTarget = evt.target.closest('a');
@@ -76,13 +76,15 @@ const getOpenPhoto = function (data,evt) {
   }
   // Фиксируем контейнер с фотографиями
   body.classList.add('modal-open');
-};
+}
+
 // Вешаем обработчик на сетку
-const setMiniaturesClick = function (callBack) {
+function setMiniaturesClick (callBack) {
   pictureList.addEventListener('click' , (evt) => {
     callBack(evt);
   });
-};
+}
+
 // Код для закрытия окна по нажатию клавиши Esc и клике по иконке закрытия.
 bigPictureCancel.addEventListener('click', () => {
   bigPicture.classList.add('hidden');
@@ -90,7 +92,7 @@ bigPictureCancel.addEventListener('click', () => {
   commentsLoader.removeEventListener('click',commentsLoaderFunction);
   commentAmount = 5;
 });
-document.addEventListener('keydown' ,  (evt) => {
+document.addEventListener('keydown' , (evt) => {
   if (evt.code === 'Escape' ) {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
