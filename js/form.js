@@ -3,6 +3,10 @@ import {changeScaleBigger,changeScaleSmaller,resetScale} from './editor-scale.js
 import { resetPictureEffects,resetSliderEffects } from './editor-effect.js';
 import { sendData } from './api.js';
 import { showMessage } from './util.js';
+// Переменные для заггрузки изображения
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const imgUploadInput = document.querySelector('.img-upload__input');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
 // Переменные для кнопок изменения масштаба
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
@@ -34,12 +38,12 @@ uploadFile.addEventListener('change', () => {
   resetSliderEffects();
 });
 // Функция закрытия окна
-const closeModalAndResetWindow = function () {
+function closeModalAndResetWindow  () {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   uploadFile.value = '';
   pristine.reset();
-};
+}
 
 // Функция закрытия окна загрузки
 function closeModalWindow () {
@@ -126,5 +130,15 @@ function setUploadImageFormSubmit(onSuccess) {
     }
   });
 }
+// Функция загрузки изображения
+function getUploadFiles () {
+  const file = imgUploadInput.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    imgUploadPreview.src = URL.createObjectURL(file);
+  }
+}
+imgUploadInput.addEventListener('change' , getUploadFiles);
 
 export {setUploadImageFormSubmit,closeModalWindow};

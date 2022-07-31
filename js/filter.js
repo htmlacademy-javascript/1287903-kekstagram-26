@@ -64,5 +64,4 @@ function setPopularPhotosClick (callBack) {
   });
 }
 
-
 export {showFilterBlock,getRandomPictures,setRandomPhotosClick,setDefaultClick,setPopularPhotosClick,getPopularPhotos};
