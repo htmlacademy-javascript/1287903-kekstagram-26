@@ -63,7 +63,7 @@ const renderComments = function (data,pictureId) {
 };
 
 // Функция открытия фотографии
-const QWERTY = function (data,evt) {
+const getOpenPhoto = function (data,evt) {
   if (evt.target.nodeName === 'A'|| evt.target.closest('a'))
   { bigPicture.classList.remove('hidden');
     const eventTarget = evt.target.closest('a');
@@ -99,4 +99,4 @@ document.addEventListener('keydown' ,  (evt) => {
   }
 });
 
-export {body,setMiniaturesClick,QWERTY};
+export {body,setMiniaturesClick,getOpenPhoto};

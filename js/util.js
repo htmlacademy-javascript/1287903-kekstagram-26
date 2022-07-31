@@ -1,13 +1,31 @@
 const ALERT_SHOW_TIME = 5000;
+
 // Функция, возвращающая случайное целое число из переданного диапазона
 function returnNumber(min,max) {
   return Math.floor((Math.random()*(max-min+1))+min);
 }
+
 // Функция для проверки максимальной длины строки.
 function checkComment(comment,max) {
   return comment.length<=max;
 }
-export {returnNumber,checkComment};
+
+//Функция, возвращающая набор случайных неповторяющихся цифр из заданного диапазона
+function getRandomNumbers(min, max, countNumbers) {
+  const rangeLength = (Math.floor(Math.max(Math.abs(min), Math.abs(max))) - Math.ceil(Math.min(Math.abs(min), Math.abs(max)))) + 1;
+  const arrayNumbers = [];
+  if (countNumbers <= rangeLength) {
+    for (let i = 0; i < countNumbers; i++) {
+      let currentNumber = returnNumber(min, max);
+      while (arrayNumbers.includes(currentNumber)) {
+        currentNumber = returnNumber(min, max);
+      }
+      arrayNumbers[i] = currentNumber;
+    }
+    return arrayNumbers;
+  }
+  return false;
+}
 
 // Функция сообщения об ошибке загрузки данных
 function showFailMessage (message) {
@@ -57,4 +75,4 @@ function showMessage (typeOfMessage) {
     }
   }
 }
-export {showFailMessage,showMessage};
+export {returnNumber,checkComment,showFailMessage,showMessage,getRandomNumbers};
