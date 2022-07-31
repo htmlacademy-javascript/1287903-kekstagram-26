@@ -12,6 +12,7 @@ const createPhotos = (data) => {
     pictureImage.dataset.pictureId = id;
     pictureFragment.appendChild(pictureImage);
   });
+  document.querySelectorAll('.picture').forEach((picture) => picture.remove());
   pictureList.appendChild(pictureFragment);
 };
 export {createPhotos};
