@@ -59,7 +59,6 @@ function renderComments (data,pictureId) {
   } else {
     commentsLoader.classList.remove('hidden');
   }
-  commentsLoader.addEventListener('click',commentsLoaderFunction);
 }
 
 // Функция открытия фотографии
@@ -73,6 +72,9 @@ function getOpenPhoto (data,evt) {
     bigPicture.querySelector('.likes-count').textContent=eventTarget.querySelector('.picture__likes').textContent;
     bigPicture.querySelector('.social__caption').textContent=eventTarget.querySelector('.picture__img').alt;
     renderComments(data,pictureDataAtribute);
+    commentsLoader.addEventListener('click', commentsLoaderFunction);
+    bigPictureCancel.addEventListener('click', onButtonCloseCancel);
+    document.addEventListener('keydown' ,onButtonCloseCancelEsc );
   }
   // Фиксируем контейнер с фотографиями
   body.classList.add('modal-open');
@@ -85,20 +87,19 @@ function setMiniaturesClick (callBack) {
   });
 }
 
-// Код для закрытия окна по нажатию клавиши Esc и клике по иконке закрытия.
-bigPictureCancel.addEventListener('click', () => {
+// Функция закрытия окна полноэкранного режима
+function onButtonCloseCancel () {
+  commentAmount = 5;
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
-  commentsLoader.removeEventListener('click',commentsLoaderFunction);
-  commentAmount = 5;
-});
-document.addEventListener('keydown' , (evt) => {
+  commentsLoader.removeEventListener('click', commentsLoaderFunction);
+  bigPictureCancel.removeEventListener('click', onButtonCloseCancel);
+  document.removeEventListener('keydown' , onButtonCloseCancelEsc);
+}
+// Функция закрытия окна полноэкранного режима по кнопке Ecs
+function onButtonCloseCancelEsc (evt) {
   if (evt.code === 'Escape' ) {
-    bigPicture.classList.add('hidden');
-    body.classList.remove('modal-open');
-    commentsLoader.removeEventListener('click',commentsLoaderFunction);
-    commentAmount = 5;
+    onButtonCloseCancel();
   }
-});
-
+}
 export {body,setMiniaturesClick,getOpenPhoto};
