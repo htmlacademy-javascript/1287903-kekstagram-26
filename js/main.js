@@ -6,7 +6,7 @@ import './editor-effect.js';
 import { getData}  from './api.js';
 import {createPhotos} from './miniature.js';
 import {getOpenPhoto,setMiniaturesClick} from './fullsize.js';
-import {setUploadImageFormSubmit ,closeModalWindow } from './form.js';
+import {setUploadImageFormSubmit ,onModalWindowClose } from './form.js';
 import {showFailMessage} from './util.js';
 import { debounce } from './debounce.js';
 import { setRandomPhotosClick, showFilterBlock , getRandomPictures, setDefaultClick, setPopularPhotosClick,
@@ -29,4 +29,4 @@ getData((photosData) => {
   }));
 },showFailMessage);
 
-setUploadImageFormSubmit(closeModalWindow);
+setUploadImageFormSubmit(onModalWindowClose);

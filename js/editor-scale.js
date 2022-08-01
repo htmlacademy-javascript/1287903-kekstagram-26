@@ -4,14 +4,14 @@ const MIN_SCALE = 25;
 const MAX_SCALE = 100;
 const STEP = 25;
 // Редактирование масштаба\
-function changeScaleSmaller () {
+function onScaleSmallerChange () {
   const valueScale =parseFloat(scaleControlValue.value);
   if (valueScale>MIN_SCALE) {
     scaleControlValue.value=`${valueScale - STEP} %`;
     imgUploadPreview.style.transform=`scale(${(valueScale - STEP)/100})`;
   }
 }
-function changeScaleBigger () {
+function onScaleBiggerChange () {
   const valueScale =parseFloat(scaleControlValue.value);
   if (valueScale<MAX_SCALE) {
     scaleControlValue.value=`${valueScale + STEP} %`;
@@ -23,4 +23,4 @@ function resetScale() {
   imgUploadPreview.style.transform = '';
 }
 
-export {changeScaleBigger,changeScaleSmaller,resetScale};
+export {onScaleSmallerChange,onScaleBiggerChange,resetScale};

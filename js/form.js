@@ -1,5 +1,5 @@
 import { body } from './fullsize.js';
-import {changeScaleBigger,changeScaleSmaller,resetScale} from './editor-scale.js';
+import {onScaleSmallerChange,onScaleBiggerChange,resetScale} from './editor-scale.js';
 import { resetPictureEffects,resetSliderEffects } from './editor-effect.js';
 import { sendData } from './api.js';
 import { showMessage } from './util.js';
@@ -33,28 +33,27 @@ const pristine = new Pristine(imgUploadForm,
 uploadFile.addEventListener('change', () => {
   imgUploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
-  document.addEventListener('keydown', closeModalWindowEscape);
+  document.addEventListener('keydown', onModalWindowEscapeClose);
   //Обработчики изменения масштаба
-  scaleControlSmaller.addEventListener('click',changeScaleSmaller );
-  scaleControlBigger.addEventListener('click', changeScaleBigger);
+  scaleControlSmaller.addEventListener('click',onScaleSmallerChange );
+  scaleControlBigger.addEventListener('click', onScaleBiggerChange);
+  //Закрытие формы редактирования изображения по кнопке закрытия и ESC
+  uploadCancel.addEventListener('click', onModalWindowClose);
   resetSliderEffects();
 });
-// Функция закрытия окна
-function closeModalAndResetWindow  () {
+
+// Функция закрытия окна загрузки
+function onModalWindowClose () {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   uploadFile.value = '';
   pristine.reset();
-}
-
-// Функция закрытия окна загрузки
-function closeModalWindow () {
-  closeModalAndResetWindow();
   resetScale();
   resetPictureEffects();
-  scaleControlSmaller.removeEventListener('click',changeScaleSmaller);
-  scaleControlBigger.removeEventListener('click', changeScaleBigger);
-  document.removeEventListener('keydown', closeModalWindowEscape);
+  scaleControlSmaller.removeEventListener('click',onScaleSmallerChange);
+  scaleControlBigger.removeEventListener('click', onScaleBiggerChange);
+  document.removeEventListener('keydown', onModalWindowEscapeClose);
+  uploadCancel.removeEventListener('click', onModalWindowClose);
 }
 
 // Функция проверки на #,символы,длину хештега
@@ -75,14 +74,11 @@ function checkAmountHashtags (value) {
   return hashtagsAmount.length <= 5;
 }
 pristine.addValidator(textHashtags,checkAmountHashtags,'Не больше 5');
-
-//Закрытие формы редактирования изображения по кнопке закрытия и ESC
-uploadCancel.addEventListener('click', closeModalWindow);
-
-function closeModalWindowEscape (evt) {
+// Функция закрытия окна загрузки по кнопке Esc
+function onModalWindowEscapeClose (evt) {
   if (evt.keyCode === 27 && evt.target !== textHashtags && evt.target !== textDescription ) {
     evt.preventDefault();
-    closeModalWindow ();
+    onModalWindowClose ();
   }
 }
 // Функция проверки одного и того же хеш-тега
@@ -101,7 +97,6 @@ function setUploadImageFormSubmit (onSuccess) {
     const isValid = pristine.validate();
     if (isValid) {
       imgUploadSubmit.disabled = true;
-      imgUploadSubmit.style.backgroundColor= '#000';
       sendData(
         () => {
           onSuccess();
@@ -128,4 +123,4 @@ function getUploadFiles () {
 }
 imgUploadInput.addEventListener('change' , getUploadFiles);
 
-export {setUploadImageFormSubmit,closeModalWindow};
+export {setUploadImageFormSubmit,onModalWindowClose};
