@@ -23,7 +23,7 @@ function choiceButton (evt) {
   }
 }
 
-// Фунуция отображения фотографий по-умолчанию
+// Функция отображения фотографий по-умолчанию
 function setDefaultClick (callBack){
   filterDefault.addEventListener('click', () => {
     callBack();
